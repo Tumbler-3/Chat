@@ -18,11 +18,15 @@ from Telega import settings
 from django.contrib import admin
 from django.urls import path
 from msg.views import main_view, ChatView
+from user.views import logout_view, login_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', main_view),
-    path('user/<int:id>/', ChatView.as_view())
+    path('logout/', logout_view),
+    path('login/', login_view),
+    path('user/<int:id>/', ChatView.as_view()),
+    
 ]
 
 #urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

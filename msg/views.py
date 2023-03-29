@@ -6,7 +6,10 @@ from django.contrib.auth.models import User
 
 
 def main_view(request):
-    return redirect(f'/user/{request.user.id}/')
+    if not request.user.is_anonymous:
+        return redirect(f'/user/{request.user.id}/')
+    else:
+        return redirect('/login/')
 
 
 class ChatView(ListView):
@@ -20,7 +23,6 @@ class ChatView(ListView):
             'user_list': kwargs['user_list'],
             'forms': kwargs['forms'],
             'chat_history': kwargs['chat_history'],
-
         }
 
         return context

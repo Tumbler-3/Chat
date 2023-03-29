@@ -18,13 +18,13 @@ from Telega import settings
 from django.contrib import admin
 from django.urls import path
 from msg.views import main_view, ChatView
-from user.views import logout_view, login_view
+from user.views import logout_view, LogRegView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', main_view),
     path('logout/', logout_view),
-    path('login/', login_view),
+    path('login/', LogRegView.as_view()),
     path('user/<int:id>/', ChatView.as_view()),
     
 ]

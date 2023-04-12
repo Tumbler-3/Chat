@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path
 from msg.views import main_view, ChatView
 from user.views import logout_view, LogRegView
+from groupchat.views import GroupChatView, leave_group_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,6 +27,8 @@ urlpatterns = [
     path('logout/', logout_view),
     path('login/', LogRegView.as_view()),
     path('user/<int:id>/', ChatView.as_view()),
+    path('group/<int:id>/', GroupChatView.as_view()),
+    path('leave/<int:id>/', leave_group_view)
     
 ]
 

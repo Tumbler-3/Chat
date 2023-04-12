@@ -29,7 +29,7 @@
                         {% for user in user_list %}
                         {%if user != current_user%}
                         <a href="/user/{{user.id}}" class="list-group-item list-group-item-action border-0">
-                            <div class="badge bg-success float-right">5</div>
+                            <div class="badge bg-success float-right"></div>
                             <div class="d-flex align-items-start">
                                 <img src="https://bootdey.com/img/Content/avatar/avatar5.png"
                                     class="rounded-circle mr-1" alt="Vanessa Tucker" width="40" height="40">
@@ -42,13 +42,27 @@
                         {%endif%}
                         {% endfor %}
 
+                        {% for group in group_list %}
+                        <a href="/group/{{group.id}}" class="list-group-item list-group-item-action border-0">
+                            <div class="badge bg-success float-right"></div>
+                            <div class="d-flex align-items-start">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar4.png"
+                                    class="rounded-circle mr-1" alt="Vanessa Tucker" width="40" height="40">
+                                <div class="flex-grow-1 ml-3">
+                                    {{group.groupname}}
+                                    <div class="small"><span class="fas fa-circle chat-online"></span></div>
+                                </div>
+                            </div>
+                        </a>
+                        {% endfor %}
+
                         <hr class="d-block d-lg-none mt-1 mb-0">
                     </div>
                     <div class="col-12 col-lg-7 col-xl-9">
                         <div class="py-2 px-4 border-bottom d-none d-lg-block">
                             <div class="d-flex align-items-center py-1">
                                 <div class="position-relative">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar3.png"
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar5.png"
                                         class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
                                 </div>
                                 <div class="flex-grow-1 pl-3">
@@ -104,12 +118,40 @@
                                 {% elif msg.receiver == current_user %}
                                 <div class="chat-message-left pb-4">
                                     <div>
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar3.png"
+                                        <img src="https://bootdey.com/img/Content/avatar/avatar5.png"
                                             class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
                                         <div class="text-muted small text-nowrap mt-2">{{msg.date}} {{msg.time}}</div>
                                     </div>
                                     <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
-                                        <div class="font-weight-bold mb-1">{{second_user.username}}</div>
+                                        <div class="font-weight-bold mb-1">{{msg.sender.username}}</div>
+                                        {{msg.text}}
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+
+                                {% for msg in group_chat_history %}
+                                {% if msg.sender == current_user %}
+                                <div class="chat-message-right pb-4">
+                                    <div>
+                                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                                            class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
+                                        <div class="text-muted small text-nowrap mt-2">{{msg.date}} {{msg.time}}</div>
+                                    </div>
+                                    <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+                                        <div class="font-weight-bold mb-1">You</div>
+                                        {{msg.text}}
+                                    </div>
+                                </div>
+                                {% elif msg.sender != current_user %}
+                                <div class="chat-message-left pb-4">
+                                    <div>
+                                        <img src="https://bootdey.com/img/Content/avatar/avatar5.png"
+                                            class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
+                                        <div class="text-muted small text-nowrap mt-2">{{msg.date}} {{msg.time}}</div>
+                                    </div>
+                                    <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+                                        <div class="font-weight-bold mb-1">{{msg.sender.username}}</div>
                                         {{msg.text}}
                                     </div>
                                 </div>
@@ -118,7 +160,7 @@
 
                             </div>
                         </div>
-
+                        {% if forms %}
                         <div class="flex-grow-0 py-3 px-4 border-top">
                             <div class="input-group">
                                 <form action="/user/{{second_user.id}}/" method="post">
@@ -129,7 +171,24 @@
                                 <a href="/logout/">Log Out</a>
                             </div>
                         </div>
-
+                        {% elif groupforms%}
+                        <div class="flex-grow-0 py-3 px-4 border-top">
+                            <div class="input-group">
+                                <form action="/group/{{group.id}}/" method="post">
+                                    {% csrf_token %}
+                                    {{ groupforms }}
+                                    <button class="btn btn-primary" type="submit">Send</button>
+                                </form>
+                                <form action="/group/{{group.id}}/" method="post">
+                                    {% csrf_token %}
+                                    {{ creategroupforms }}
+                                    <button class="btn btn-primary" type="submit">Create</button>
+                                </form>
+                                <a href="/logout/">Log Out</a>
+                                <a href="/leave/{{group.id}}/">leave</a>
+                            </div>
+                        </div>
+                        {%endif%}
                     </div>
                 </div>
             </div>

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView
+from groupchat.forms import GroupChatForm, GroupChatMessageForm
 from msg.forms import CreateMessage
 from msg.models import Message
 from groupchat.models import GroupChat
@@ -25,6 +26,7 @@ class ChatView(ListView):
             'user_list': kwargs['user_list'],
             'group_list': kwargs['group_list'],
             'forms': kwargs['forms'],
+            'creategroupforms': kwargs['creategroupforms'],
             'chat_history': kwargs['chat_history'],
         }
 
@@ -42,7 +44,8 @@ class ChatView(ListView):
         chat_history = second | current
         user_list = User.objects.all()
         group_list = GroupChat.objects.filter(participants=current_user)
-
+        creategroupforms = GroupChatForm(user=current_user)
+        
         if id == current_user.id:
             return render(request, self.template_name, context={
                 'user_list': user_list,
@@ -54,6 +57,7 @@ class ChatView(ListView):
 
             return render(request, self.template_name, context=self.get_context_data(
                 forms=CreateMessage,
+                creategroupforms=creategroupforms,
                 user_list=user_list,
                 group_list=group_list,
                 current_user=current_user,
@@ -63,6 +67,7 @@ class ChatView(ListView):
             
             
     def post(self, request, id):
+        
         current_user = None if request.user.is_anonymous else request.user
         second_user = User.objects.get(id=id)
         form = CreateMessage(data=request.POST)
@@ -73,6 +78,7 @@ class ChatView(ListView):
         chat_history = second | current
         user_list = User.objects.all()
         group_list = GroupChat.objects.all()
+        creategroupforms = GroupChatForm(user=current_user)
 
         if form.is_valid():
             Message.objects.create(
@@ -86,6 +92,7 @@ class ChatView(ListView):
         else:
             return render(request, self.template_name, context=self.get_context_data(
                 forms=CreateMessage,
+                creategroupforms=creategroupforms,
                 user_list=user_list,
                 group_list=group_list,
                 current_user=current_user,

@@ -18,7 +18,7 @@ from Telega import settings
 from django.contrib import admin
 from django.urls import path
 from msg.views import main_view, ChatView
-from user.views import logout_view, LogRegView
+from user.views import logout_view, LogRegView, profile_view
 from groupchat.views import GroupChatView, leave_group_view
 
 urlpatterns = [
@@ -27,9 +27,11 @@ urlpatterns = [
     path('logout/', logout_view),
     path('login/', LogRegView.as_view()),
     path('user/<int:id>/', ChatView.as_view()),
+    path('user/<int:id>/profile', profile_view),
     path('group/<int:id>/', GroupChatView.as_view()),
     path('leave/<int:id>/', leave_group_view)
     
 ]
 
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

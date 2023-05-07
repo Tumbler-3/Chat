@@ -48,7 +48,7 @@ class GroupChatView(ListView):
 
     def post(self, request, id):
         
-        form = GroupChatMessageForm(data=request.POST)
+        form = GroupChatMessageForm(request.POST, request.FILES)
         create_group_forms = GroupChatForm(data=request.POST)
         group = GroupChat.objects.get(id=id)
         current_user = None if request.user.is_anonymous else request.user
@@ -62,7 +62,7 @@ class GroupChatView(ListView):
                 group=group,
                 sender=request.user,
                 text=form.cleaned_data.get('text'),
-                photo=form.cleaned_data.get('photo')
+                photo=request.FILES.get('photo')
             )
             return redirect(f'/group/{id}/')
         

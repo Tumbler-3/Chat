@@ -70,7 +70,7 @@ class ChatView(ListView):
         
         current_user = None if request.user.is_anonymous else request.user
         second_user = User.objects.get(id=id)
-        form = CreateMessage(data=request.POST)
+        form = CreateMessage(request.POST, request.FILES)
         second = self.model.objects.filter(
             receiver=second_user, sender=current_user)
         current = self.model.objects.filter(
@@ -85,7 +85,7 @@ class ChatView(ListView):
                 receiver=second_user,
                 sender=request.user,
                 text=form.cleaned_data.get('text'),
-                photo=form.cleaned_data.get('photo')
+                photo=request.FILES.get('photo')
             )
             return redirect(f'/user/{id}/')
 

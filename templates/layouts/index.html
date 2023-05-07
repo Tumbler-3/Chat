@@ -1,5 +1,6 @@
 {% load static %}
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -60,6 +61,7 @@
                     <div class="col-12 col-lg-7 col-xl-9">
                         <div class="py-2 px-4 border-bottom d-none d-lg-block">
                             <div class="d-flex align-items-center py-1">
+                                {% if second_user %}
                                 <div class="position-relative">
                                     <img src="https://bootdey.com/img/Content/avatar/avatar5.png"
                                         class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
@@ -68,10 +70,27 @@
                                     <strong>{{second_user.username}}</strong>
                                     <div class="text-muted small"><em>Typing...</em></div>
                                 </div>
+
+                                {% elif group %}
+                                <div class="position-relative">
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar4.png"
+                                        class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
+                                </div>
+                                <div class="flex-grow-1 pl-3">
+                                    <strong>{{group.groupname}}</strong>
+                                    <div class="text-muted small"><em>Typing...</em></div>
+                                </div>
+
+                                {% else %}
+                                <div class="position-relative">
+                                </div>
+                                <div class="flex-grow-1 pl-3">
+                                </div>
+                                {% endif %}
+
                                 <div>
                                     <div id="creategroup" class="overlay">
                                         <div class="popup">
-                                            <h2>Here i am</h2>
                                             <a class="close" href="#">&times;</a>
                                             <div class="content">
                                                 <form action="/group/{{group.id}}/" method="post">
@@ -82,23 +101,40 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button class="btn btn-primary btn-lg mr-1 px-3">
-                                        <a href="#creategroup"><font color="white">group</font></a>
+                                    <button onclick="this.classList.toggle('active');"
+                                        class="btn btn-primary btn-lg mr-1 px-3">
+                                        <div class="dots">
+                                            <div class="dot"></div>
+                                            <div class="dot"></div>
+                                            <div class="dot"></div>
+                                            <div class="list">
+                                                <ul>
+                                                    <li onclick="window.location.href='#creategroup'">
+                                                        Create group
+                                                    </li>
+                                                    <li> 
+                                                        Save for later
+                                                    </li>
+                                                    <li onclick="window.location.href='/user/{{user.id}}/profile'">
+                                                        Profile
+                                                    </li>
+                                                    <li>
+                                                        Mark as spam
+                                                    </li>
+                                                    <li onclick="window.location.href='/logout/'">
+                                                        Log Out
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="cursor"
+                                            onclick="document.querySelector('.dots').classList.toggle('active');"></div>
                                     </button>
-                                    <button class="btn btn-light border btn-lg px-3"><svg
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="feather feather-more-horizontal feather-lg">
-                                            <circle cx="12" cy="12" r="1"></circle>
-                                            <circle cx="19" cy="12" r="1"></circle>
-                                            <circle cx="5" cy="12" r="1"></circle>
-                                        </svg></button>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="position-relative">
+                        <div>
                             <div class="chat-messages p-4">
                                 {% for msg in chat_history %}
                                 {% if msg.receiver == second_user %}
@@ -109,6 +145,9 @@
                                         <div class="text-muted small text-nowrap mt-2">{{msg.date}} {{msg.time}}</div>
                                     </div>
                                     <div class="flex-shrink-1 rounded py-2 px-3 mr-3">
+                                        {% if msg.photo %}
+                                        <img src="/media/{{ msg.photo }}/" height="120" width="120">
+                                        {% endif %}
                                         <div class="font-weight-bold mb-1">You</div>
                                         {{msg.text}}
                                     </div>
@@ -121,6 +160,9 @@
                                         <div class="text-muted small text-nowrap mt-2">{{msg.date}} {{msg.time}}</div>
                                     </div>
                                     <div class="flex-shrink-1 rounded py-2 px-3 ml-3">
+                                        {% if msg.photo %}
+                                        <img src="/media/{{ msg.photo }}/" height="120" width="120">
+                                        {% endif %}
                                         <div class="font-weight-bold mb-1">{{msg.sender.username}}</div>
                                         {{msg.text}}
                                     </div>
@@ -137,6 +179,9 @@
                                         <div class="text-muted small text-nowrap mt-2">{{msg.date}} {{msg.time}}</div>
                                     </div>
                                     <div class="flex-shrink-1 rounded py-2 px-3 mr-3">
+                                        {% if msg.photo %}
+                                        <img src="/media/{{ msg.photo }}/" height="120" width="120">
+                                        {% endif %}
                                         <div class="font-weight-bold mb-1">You</div>
                                         {{msg.text}}
                                     </div>
@@ -149,6 +194,9 @@
                                         <div class="text-muted small text-nowrap mt-2">{{msg.date}} {{msg.time}}</div>
                                     </div>
                                     <div class="flex-shrink-1 rounded py-2 px-3 ml-3">
+                                        {% if msg.photo %}
+                                        <img src="/media/{{ msg.photo }}/" height="120" width="120">
+                                        {% endif %}
                                         <div class="font-weight-bold mb-1">{{msg.sender.username}}</div>
                                         {{msg.text}}
                                     </div>
@@ -166,7 +214,6 @@
                                     {{ forms }}
                                     <button class="btn btn-primary" type="submit">Send</button>
                                 </form>
-                                <a href="/logout/">Log Out</a>
                             </div>
                         </div>
                         {% elif groupforms%}
@@ -177,8 +224,7 @@
                                     {{ groupforms }}
                                     <button class="btn btn-primary" type="submit">Send</button>
                                 </form>
-                                <a href="/logout/">Log Out</a>
-                                <a href="/leave/{{group.id}}/">leave</a>
+                                <a href="/leave/{{group.id}}/" class="btn">Leave</a>
                             </div>
                         </div>
                         {%endif%}

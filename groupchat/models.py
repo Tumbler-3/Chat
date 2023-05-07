@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-
 class GroupChat(models.Model):
     groupname = models.CharField(max_length=200)
     participants = models.ManyToManyField(User)

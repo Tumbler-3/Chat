@@ -50,16 +50,14 @@ h1 {
 }
 
 .popup {
-  margin: 120px;
-  padding: 20px;
   background: #fff;
   border-radius: 5px;
-  left: 50%;
-  right: 50%;
-  top: 50%;
+  left: 35%;
+  top: 20%;
   bottom: 50%;
   width: 30%;
-  position: absolute;
+  height: 50%;
+  position: sticky;
   transition: all 2s ease-in-out;
 }
 
@@ -82,7 +80,9 @@ h1 {
   color: #06d85f;
 }
 .popup .content {
-  max-height: 30%;
+  margin-top: 5px;
+  margin-left: 20%;
+  max-height: 100%;
   overflow: auto;
 }
 
@@ -138,4 +138,96 @@ h1 {
 }
 .border-top {
   border-top: 1px solid #dee2e6 !important;
+}
+
+.btn {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.dots {
+  display: flex;
+  padding: 10px;
+  overflow: hidden;
+}
+.dot {
+  background: #ffffff;
+  border-radius: 50%;
+  height: 10px;
+  margin-right: 5px;
+  width: 10px;
+}
+.dot:last-child {
+  margin-right: 0;
+}
+.drop {
+  background: #fff;
+  border-radius: 1.2px;
+  height: 5px;
+  transform: translateY(5px);
+  transition: transform 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  width: 5px;
+}
+.list {
+  left: 70%;
+  position: absolute;
+  top: 68px;
+  width: 250px;
+}
+.list ul {
+  margin: 0;
+  padding: 0;
+}
+.list li {
+  color: black;
+  background-color: white;
+  align-items: center;
+  border-bottom: 1px solid #bdbdbd;
+  display: flex;
+  font-size: 24px;
+  height: 50px;
+  margin-left: 40px;
+  opacity: 0;
+  list-style: none;
+  transition: opacity 100ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  user-select: none;
+  -moz-user-select: none;
+}
+.list li:hover {
+  background: #f5f5f5;
+}
+.dots.active .container {
+  transform: translateX(-50%) translateY(20px);
+}
+.dots.active .drop {
+  transform: translateY(212px) scale(108);
+}
+.dots.active .list li {
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 200ms 100ms cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+.dots.active .list li:nth-child(2) {
+  transition-delay: 130ms;
+}
+.dots.active .list li:nth-child(3) {
+  transition-delay: 160ms;
+}
+.dots.active .list li:nth-child(4) {
+  transition-delay: 190ms;
+}
+.dots.active .list li:nth-child(5) {
+  transition-delay: 220ms;
+}
+.dots.active .shadow {
+  opacity: 1;
+  transition: opacity 150ms 150ms cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+.cursor {
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+  height: 40px;
+  position: absolute;
+  top: 25px;
+  width: 80px;
 }
